@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo List</title>
+    <link rel="stylesheet" href="stylesheets/all.css" />
+  </head>
+  <body>
+    <div class="loginPage hide" data-page="login">
+      <div>
+        <h1><i class="bi bi-check2-square"></i>ONLINE TODO LIST</h1>
+        <img src="./images/todo.png" alt="todo" />
+      </div>
+      <div class="loginForm">
+        <h2>最實用的線上待辦事項服務</h2>
+        <label for="loginEmail">Email </label>
+        <input type="email" id="loginEmail" placeholder="請輸入Email" />
+        <label for="loginPwd">密碼 </label>
+        <input type="password" id="loginPwd" placeholder="請輸入密碼" />
+        <button class="login" type="submit">登入</button>
+        <a class="toSignupPage" href="#">註冊帳號</a>
+      </div>
+    </div>
+    <div class="signupPage" data-page="signup">
+      <div>
+        <h1><i class="bi bi-check2-square"></i>ONLINE TODO LIST</h1>
+        <img src="./images/todo.png" alt="todo" />
+      </div>
+      <div class="loginForm">
+        <h2>最實用的線上待辦事項服務</h2>
+        <label for="signupEmail">Email </label>
+        <input type="email" id="signupEmail" placeholder="請輸入Email" />
+        <label for="nickname">您的暱稱 </label>
+        <input type="text" id="nickname" placeholder="請輸入暱稱" />
+        <label for="signupPwd">密碼 </label>
+        <input type="password" id="signupPwd" placeholder="請輸入密碼" />
+        <label for="again">再次輸入密碼 </label>
+        <input type="password" id="again" placeholder="請再次輸入密碼" />
+        <button class="register" type="submit">註冊帳號</button>
+        <a class="toLoginPage" href="#">登入</a>
+      </div>
+    </div>
+    <div class="todoPage hide" data-page="todo">
+      <div class="navbar">
+        <h1><i class="bi bi-check2-square"></i> ONLINE TODO LIST</h1>
+        <div>
+          <p><span class="whos"></span>的待辦</p>
+          <a class="logout" href="#">登出</a>
+        </div>
+      </div>
+      <section>
+        <div class="userInput">
+          <input class="input" type="text" placeholder="新增待辦事項" />
+          <a href="#" class="add">+</a>
+        </div>
+        <div class="card">
+          <ul class="tabs">
+            <li class="active">全部</li>
+            <li>待完成</li>
+            <li>已完成</li>
+          </ul>
+          <div class="content">
+            <ul class="list">
+            </ul>
+            <div class="footer">
+              <p><span></span>個待完成項目</p>
+              <a href="#">清除已完成項目</a>
+            </div>
+          </div>
+      </section>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script src="all.js"></script>
+  </body>
+</html>

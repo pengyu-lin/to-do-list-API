@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="stylesheets/all.css" />
   </head>
   <body>
-    <div class="loginPage hide" data-page="login">
+    <div class="loginPage" data-page="login">
       <div>
         <h1><i class="bi bi-check2-square"></i>ONLINE TODO LIST</h1>
         <img src="./images/todo.png" alt="todo" />
@@ -23,7 +23,7 @@
         <a class="toSignupPage" href="#">註冊帳號</a>
       </div>
     </div>
-    <div class="signupPage" data-page="signup">
+    <div class="signupPage hide" data-page="signup">
       <div>
         <h1><i class="bi bi-check2-square"></i>ONLINE TODO LIST</h1>
         <img src="./images/todo.png" alt="todo" />
@@ -57,22 +57,23 @@
         </div>
         <div class="card">
           <ul class="tabs">
-            <li class="active">全部</li>
-            <li>待完成</li>
-            <li>已完成</li>
+            <li class="active" data-tab="all">全部</li>
+            <li data-tab="remain">待完成</li>
+            <li data-tab="done">已完成</li>
           </ul>
           <div class="content">
             <ul class="list">
             </ul>
             <div class="footer">
-              <p><span></span>個待完成項目</p>
-              <a href="#">清除已完成項目</a>
+              <p><span class="remainNum"></span>個待完成項目</p>
+              <a class="deleteDone" href="#">清除已完成項目</a>
             </div>
           </div>
       </section>
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="all.js"></script>
   </body>
 </html>

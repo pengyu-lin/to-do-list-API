@@ -73,6 +73,13 @@ loginBtn.addEventListener("click", (e) => {
   e.preventDefault();
   signin();
 });
+[loginPwd, loginEmail].forEach((item) => {
+  item.addEventListener("keypress", function (e) {
+    if (e.key == "Enter") {
+      signin();
+    }
+  });
+});
 
 function signin() {
   const email = document.querySelector("#loginEmail").value.trim();
@@ -144,6 +151,9 @@ function getTodoList() {
       console.log(response);
       data = response.data.todos;
       render(data);
+      remainNum.textContent = data.filter(
+        (item) => item.completed_at == null
+      ).length;
     })
     .catch((error) => {
       console.log(error.response);
@@ -154,6 +164,11 @@ const addBtn = document.querySelector(".add");
 const input = document.querySelector(".input");
 
 addBtn.addEventListener("click", inputTodo);
+input.addEventListener("keypress", function (e) {
+  if (e.key == "Enter") {
+    inputTodo();
+  }
+});
 
 function inputTodo() {
   if (input.value.trim() == "") {
@@ -161,6 +176,7 @@ function inputTodo() {
   } else {
     todo = input.value.trim();
     addTodo(todo);
+    input.value = "";
   }
 }
 
@@ -212,11 +228,36 @@ function render(arr) {
   list.innerHTML = str;
 }
 
-//delete todo
+//delete/edit todo
 list.addEventListener("click", (e) => {
   let id = e.target.closest("li").dataset.id;
-  if (e.target.getAttribute("class") == "delete") {
+  let index = data.findIndex((item) => item.id === id);
+  if (e.target.nodeName == "INPUT") {
+    toggleChecked(id);
+  } else if (e.target.closest("a").getAttribute("class") == "delete") {
+    e.preventDefault();
+    delTodo(id);
+  } else if (e.target.closest("a").getAttribute("class") == "edit") {
+    e.preventDefault();
     console.log(123);
+    (async () => {
+      const { value: content } = await Swal.fire({
+        title: "請輸入欲更改內容",
+        input: "text",
+        inputPlaceholder: `${data[index].content}`,
+        showCancelButton: true,
+        inputValidator: (value) => {
+          if (!value) {
+            return "請輸入內容!";
+          }
+        },
+      });
+
+      if (content) {
+        Swal.fire(`已將待辦事項更改為: ${content}`);
+        editTodo(id, content);
+      }
+    })();
   }
 });
 
@@ -225,8 +266,77 @@ function delTodo(id) {
     .delete(`${url}/todos/${id}`)
     .then((response) => {
       console.log(response);
+      getTodoList();
     })
     .catch((error) => {
       console.log(error.response);
     });
 }
+
+function editTodo(id, content) {
+  axios
+    .put(`${url}/todos/${id}`, {
+      todo: {
+        content,
+      },
+    })
+    .then((response) => {
+      console.log(response);
+      getTodoList();
+    })
+    .catch((error) => {
+      console.log(error.response);
+    });
+}
+
+//toggle checkbox
+function toggleChecked(id) {
+  axios
+    .patch(`${url}/todos/${id}/toggle`)
+    .then((response) => {
+      console.log(response);
+      getTodoList();
+    })
+    .catch((error) => {
+      console.log(error.response);
+    });
+}
+
+//change tab
+let tabStatus = "all";
+const tabs = document.querySelector(".tabs");
+let tab = document.querySelectorAll(".tabs li");
+tabs.addEventListener("click", function (e) {
+  tabStatus = e.target.dataset.tab;
+  tab.forEach(function (item) {
+    item.classList.remove("active");
+  });
+  e.target.classList.add("active");
+  updateTab();
+});
+
+//tab content
+const remainNum = document.querySelector(".remainNum");
+function updateTab() {
+  let tabData = [];
+  if (tabStatus == "all") {
+    tabData = data;
+  } else if (tabStatus == "remain") {
+    tabData = data.filter((item) => item.completed_at == null);
+  } else if (tabStatus == "done") {
+    tabData = data.filter((item) => item.completed_at != null);
+  }
+  render(tabData);
+}
+
+//delete checked todos
+const deleteDone = document.querySelector(".deleteDone");
+deleteDone.addEventListener("click", function (e) {
+  e.preventDefault();
+  data.forEach((item) => {
+    if (item.completed_at != null) {
+      id = item.id;
+      delTodo(id);
+    }
+  });
+});
